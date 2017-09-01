@@ -1,0 +1,168 @@
+{{extend 'layout.html'}}
+<div class="h4">
+    Zarządzenia
+</div>
+{{ous_rows = db(db.ous.id<26).select()}}
+    {{for or_ in ous_rows:}}
+        {{docs = db((db.files.ou == or_.id)&(db.files.parent_doc == None)).select(orderby=~db.files.created_)}}
+        <div>
+            {{if docs:}}
+               <div  class="containter" data-toggle="collapse" data-target="#{{=or_.code_}}">
+                   <span class="glyphicon glyphicon-folder-open">
+                       
+                   </span>
+                   <button class="btn btn-xs" style="background-color:white;color:black;text-transform:none;">{{=or_.ou}}</button>
+                   
+                </div>
+                <div id="{{=or_.code_}}" class="collapse container">
+                {{for i in docs:}}
+                    <div class="row">
+                       <ul class="glyphicon glyphicon-file" style="background-color:white;color:black;">
+                         {{=i.title.replace('_','/')}}
+                           </div>
+                        <div class="row">
+                            
+                        
+                           <ul>
+                               <a href="{{=URL('default','download',args=[i.file_])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    pobierz </button>
+                               </a>
+                               <a href="{{=URL('default','treenode',args=[i.id])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    dokumenty powiązane </button>
+                               </a>
+                           </ul>
+                            </div>
+                        </ul><br>
+                    
+                {{pass}}
+                </div>
+            {{pass}}
+        </div>
+        {{pass}}
+<hr>
+<div class="h4">
+    Dokumenty Grupy Kapitałowej</div>
+{{ous_rows = db(db.ous.id==27).select()}}
+    {{for or_ in ous_rows:}}
+        {{docs = db((db.files.ou == or_.id)&(db.files.parent_doc == None)).select(orderby=~db.files.created_)}}
+        <div>
+            {{if docs:}}
+               <div  class="containter" data-toggle="collapse" data-target="#{{=or_.code_}}">
+                   <span class="glyphicon glyphicon-folder-open" style="color:black">
+                       
+                   </span>
+                   <button class="btn btn-xs" style="background-color:white;color:black;text-transform:none">{{=or_.ou}}</button>
+                   
+                </div>
+                <div id="{{=or_.code_}}" class="collapse container">
+                {{for i in docs:}}
+                    <div class="row">
+                       <ul class="glyphicon glyphicon-file" style="background-color:white;color:black;">
+                         {{=i.title.replace('_','/')}}
+                           </div>
+                        <div class="row">
+                            
+                        
+                           <ul>
+                               <a href="{{=URL('default','download',args=[i.file_])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    pobierz </button>
+                               </a>
+                               <a href="{{=URL('default','treenode',args=[i.id])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    dokumenty powiązane </button>
+                               </a>
+                           </ul>
+                            </div>
+                        </ul><br>
+                    
+                {{pass}}
+                </div>
+            {{pass}}
+        </div>
+        {{pass}}
+
+
+{{ous_rows = db(db.ous.id==26).select()}}
+{{if ous_rows:}}
+<!--div>
+    Dokumenty Grupy Kapitałowej PGNiG 
+</div-->
+{{pass}}
+    {{for or_ in ous_rows:}}
+        {{docs = db((db.files.ou == or_.id)&(db.files.parent_doc == None)).select(orderby=~db.files.created_)}}
+        <div>
+            {{if docs:}}
+               <div  class="containter" data-toggle="collapse" data-target="#{{=or_.code_}}">
+                   <span class="glyphicon glyphicon-folder-open" style="color:black">
+                       
+                   </span>
+                   <button class="btn btn-xs" style="background-color:white;color:black;text-transform:none">{{=or_.ou}}</button>
+                   
+                </div>
+                <div id="{{=or_.code_}}" class="collapse container">
+                {{for i in docs:}}
+                    <div class="row">
+                       <ul class="glyphicon glyphicon-file" style="background-color:white;color:#black;">
+                         {{=i.title.replace('_','/')}}
+                           </div>
+                        <div class="row">
+                            
+                        
+                           <ul>
+                               <a href="{{=URL('default','download',args=[i.file_])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    pobierz </button>
+                               </a>
+                               <a href="{{=URL('default','treenode',args=[i.id])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    dokumenty powiązane </button>
+                               </a>
+                           </ul>
+                            </div>
+                        </ul><br>
+                    
+                {{pass}}
+                </div>
+            {{pass}}
+        </div>
+        {{pass}}
+<!--- Dokumenty Spółki -->
+<hr>
+{{ous_rows = db(db.ous.id==28).select()}}
+{{if ous_rows:}}
+
+{{pass}}
+    {{for or_ in ous_rows:}}
+        {{docs = db((db.files.ou == or_.id)&(db.files.parent_doc == None)).select(orderby=~db.files.created_)}}
+        <div>
+            {{if docs:}}
+               <div  class="containter" data-toggle="collapse" data-target="#{{=or_.code_}}">
+                   <span class="glyphicon glyphicon-folder-open" style="color:black">
+                       
+                   </span>
+                   <button class="btn btn-xs" style="background-color:white;color:black;text-transform:none">{{=or_.ou}}</button>
+                   
+                </div>
+                <div id="{{=or_.code_}}" class="collapse container">
+                {{for i in docs:}}
+                    <div class="row">
+                       <ul class="glyphicon glyphicon-file" style="background-color:white;color:#black;">
+                         {{=i.title.replace('_','/')}}
+                           </div>
+                        <div class="row">
+                            
+                        
+                           <ul>
+                               <a href="{{=URL('default','download',args=[i.file_])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    pobierz </button>
+                               </a>
+                               <a href="{{=URL('default','treenode',args=[i.id])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;">    dokumenty powiązane </button>
+                               </a>
+                           </ul>
+                            </div>
+                        </ul><br>
+                    
+                {{pass}}
+                </div>
+            {{pass}}
+        </div>
+        {{pass}}
+

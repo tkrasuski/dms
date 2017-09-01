@@ -1,0 +1,17 @@
+{{extend 'layout.html'}}
+
+<!--{{=wyniki}}-->
+<form method="POST" name="search">
+    <input type="text" name="kryterium" value="{{=session['szukam']}}">
+    <input type="submit" class="btn btn-info btn-xs" value="szukaj"><br>
+    szukaj w treści dokumentów
+    <input type="checkbox" name="content"><br>
+    odwróć chronologię wyników
+    <input type="checkbox" name="sort">
+           
+ {{=form.hidden_fields()}}
+    </form>
+
+
+<br>
+{{=frm}}

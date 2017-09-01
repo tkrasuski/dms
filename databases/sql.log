@@ -1,0 +1,167 @@
+timestamp: 2017-06-09T11:04:59.466000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2017-06-09T11:04:59.572000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-06-09T11:05:00.253000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-09T11:05:00.293000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2017-06-09T11:05:00.317000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2017-06-09T11:05:00.340000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2017-06-09T11:09:59.145000
+CREATE TABLE categories(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category CHAR(512)
+);
+success!
+timestamp: 2017-06-09T11:14:59.005000
+CREATE TABLE ous(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ou CHAR(512),
+    parent_ou INTEGER
+);
+success!
+timestamp: 2017-06-09T11:14:59.030000
+CREATE TABLE files(
+    id INTEGER PRIMARY KEY AUTOINCREMENT
+);
+success!
+timestamp: 2017-06-09T12:18:16.476000
+ALTER TABLE files ADD title CHAR(512);
+timestamp: 2017-06-09T12:18:16.494000
+ALTER TABLE files ADD file_ CHAR(512);
+timestamp: 2017-06-09T12:18:16.509000
+ALTER TABLE files ADD txt_content TEXT;
+timestamp: 2017-06-09T12:18:16.524000
+ALTER TABLE files ADD ou INTEGER REFERENCES ous (id) ON DELETE CASCADE  ;
+timestamp: 2017-06-09T12:18:16.540000
+ALTER TABLE files ADD doc_owner CHAR(512);
+success!
+success!
+timestamp: 2017-06-09T12:45:28.522000
+CREATE TABLE tags(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag CHAR(512)
+);
+success!
+timestamp: 2017-06-09T12:48:28.479000
+ALTER TABLE tags ADD file_ INTEGER REFERENCES files (id) ON DELETE CASCADE  ;
+success!
+timestamp: 2017-06-09T12:49:28.522000
+ALTER TABLE files ADD parent_doc INTEGER REFERENCES files (id) ON DELETE CASCADE  ;
+success!
+timestamp: 2017-06-09T13:16:28.547000
+ALTER TABLE ous ADD code_ CHAR(512);
+success!
+timestamp: 2017-06-09T13:22:24.038000
+ALTER TABLE files ADD category INTEGER REFERENCES categories (id) ON DELETE CASCADE  ;
+success!
+timestamp: 2017-06-13T10:32:32.927000
+CREATE TABLE haystack_files(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fieldname CHAR(512),
+    keyword CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2017-06-14T14:12:21.214000
+ALTER TABLE files ADD indexed_ CHAR(512);
+success!
+timestamp: 2017-06-30T09:54:46.507000
+ALTER TABLE files ADD created_ DATE;
+success!
+timestamp: 2017-06-30T13:50:02.907000
+CREATE TABLE wiki_page(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug CHAR(512),
+    title CHAR(255) UNIQUE,
+    body TEXT NOT NULL,
+    tags TEXT,
+    can_read TEXT,
+    can_edit TEXT,
+    changelog CHAR(512),
+    html TEXT,
+    render CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T13:50:02.938000
+CREATE TABLE wiki_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    wiki_page INTEGER REFERENCES wiki_page (id) ON DELETE CASCADE  ,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2017-06-30T13:50:02.966000
+CREATE TABLE wiki_media(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wiki_page INTEGER REFERENCES wiki_page (id) ON DELETE CASCADE  ,
+    title CHAR(512),
+    filename CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+DELETE FROM files;
+DELETE FROM sqlite_sequence WHERE name='files';
+success!
+DELETE FROM haystack_files;
+DELETE FROM sqlite_sequence WHERE name='haystack_files';
+success!

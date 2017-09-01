@@ -1,0 +1,36 @@
+{{extend 'layout.html'}}
+{{ous_rows = db(db.ous.id>0).select()}}
+    {{for or_ in ous_rows:}}
+        {{docs = db((db.files.ou == or_.id)&(db.files.parent_doc == None)).select(orderby=~db.files.created_)}}
+        <div>
+               <div  class="containter" data-toggle="collapse" data-target="#{{=or_.code_}}">
+                   <span class="glyphicon glyphicon-folder-open" style="color:#f58026">
+                       
+                   </span>
+                   <button class="btn btn-xs" style="background-color:white;color:#f58026;text-transform:none">{{=or_.ou}}</button>
+                   
+                </div>
+                <div id="{{=or_.code_}}" class="collapse container">
+                {{for i in docs:}}
+                    <div class="row">
+                       <ul class="glyphicon glyphicon-file" style="background-color:white;color:#f58026;font-family:'Veto'">
+                         {{=i.title.replace('_','/')}}
+                           </div>
+                        <div class="row">
+                            
+                        
+                           <ul>
+                               <a href="{{=URL('default','download',args=[i.file_])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;color:#f58026;">    pobierz </button>
+                               </a>
+                               <a href="{{=URL('default','treenode',args=[i.id])}}">
+                                   <button class="btn btn-info btn-xs" style="background-color:#f7f8fa;color:#f58026;">    dokumenty powiązane </button>
+                               </a>
+                           </ul>
+                            </div>
+                        </ul><br>
+                    
+                {{pass}}
+                </div>
+        </div>
+        {{pass}}

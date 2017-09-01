@@ -1,0 +1,71 @@
+{{extend 'layout.html'}}
+{{if len(request.args)>0:}}
+    {{id=int(request.args[0])}}
+{{else:}}
+    {{id=0}}
+{{pass}}
+
+<a href="{{=URL('default','tree')}}">
+    <button class="btn btn-info btn-xs">
+        Wróć
+    </button>
+</a>
+{{doc=db(db.files.id==id).select().first()}}
+    <div class="container">
+        {{if doc:}}
+        <div class="row">
+                <strong>Dokument:</strong> {{=doc.title.replace('_','/')}}
+        </div>
+        <div class="row">
+            Kategoria: {{=doc.category.category}}
+        </div>
+        <div class="row">
+            <strong>Jednostka organizacyjna:</strong> {{=doc.ou.ou}}
+        </div>
+        <div class="row">
+            <a href="{{=URL('default','download',args=[doc.file_])}}">
+            <button class="btn btn-info btn-xs">
+                pobierz plik
+            </button></a>
+            {{pass}}
+        </div>        
+    </div>
+<hr>
+<!-- pliki powiązane -->
+{{pdoc=db(db.files.parent_doc==id).select()}}
+<div class="container">
+    <div class="row">
+        <strong>Dokumenty powiązane:</strong>
+    </div>
+    {{for rd in pdoc:}}
+        <div class="row">
+            {{=rd.title.replace('_','/')}}
+            <a href="{{=URL('default','download',args=[rd.file_])}}">
+            <button class="btn btn-info btn-xs">
+                pobierz plik
+            </button></a>
+            <a href="{{=URL('default','treenode',args=[rd.id])}}">
+            <button class="btn btn-info btn-xs">
+                dokumenty powiązane
+            </button>
+                </a>
+    </div>
+    {{pass}}
+</div>
+{{udoc = db(db.files.id==doc.parent_doc).select()}}
+<div class="container">
+    
+    {{for rd in udoc:}}
+        <div class="row">
+            {{=rd.title.replace('_','/')}}
+            <a href="{{=URL('default','download',args=[rd.file_])}}">
+            <button class="btn btn-info btn-xs">
+                pobierz plik
+            </button></a>
+            <a href="{{=URL('default','treenode',args=[rd.id])}}">
+            <button class="btn btn-info btn-xs">
+                dokumenty powiązane
+            </button></a>
+    </div>
+    {{pass}}
+</div>
